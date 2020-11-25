@@ -3,7 +3,7 @@ import 'dart:io'; // 追加
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';//basename使うために追加
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter/material.dart';//TextEditingControllerを引数として渡してるので
 
 class FileController {
   // ドキュメントのパスを取得
@@ -28,7 +28,7 @@ class FileController {
     return savedFile;
   }
 
-  static Future<void> saveOriginalNameImage(File image) async {
+  static Future<void> saveOriginalNameImage(File image, TextEditingController controller) async {
     final path = await localPath; //directory.path
     ///file名(image.png)のところは、var fileName =basename(file.path)として、末尾だけを使ってファイル名付けられる
     ///import 'package:path/path.dart';必須
@@ -39,9 +39,10 @@ class FileController {
     final String fileName = basename(image.path);
     final String imagePath = '$path/$fileName';
     final File localImage = await image.copy(imagePath);
+    final String key = controller.text;
     /// localImageをlocalImage.pathとしてDBにString保存(今回はsharedPreferences)
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString('test_image', localImage.path);
+    prefs.setString(key, localImage.path);
 
   }
 
