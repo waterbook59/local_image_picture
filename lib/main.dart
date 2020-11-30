@@ -5,6 +5,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:localimagepictureapp/utils/constants.dart';
 import 'package:localimagepictureapp/file_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import  'package:keyboard_actions/keyboard_actions.dart';
+import 'package:localimagepictureapp/scaffold_test.dart';
 
 void main() {
   runApp(MyApp());
@@ -20,7 +22,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home:
+//      ScaffoldTest(),
+      MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -41,6 +45,113 @@ class _MyHomePageState extends State<MyHomePage> {
   File baseNameLocalFile;
   TextEditingController _textEditingController = TextEditingController();
   TextEditingController _localFileKey = TextEditingController();
+  final FocusNode _nodeText1 = FocusNode();
+  final FocusNode _nodeText2 = FocusNode();
+  final FocusNode _nodeText3 = FocusNode();
+  final FocusNode _nodeText4 = FocusNode();
+  final FocusNode _nodeText5 = FocusNode();
+  final FocusNode _nodeText6 = FocusNode();
+
+  KeyboardActionsConfig _buildConfig(BuildContext context) {
+    return KeyboardActionsConfig(
+      keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
+      keyboardBarColor: Colors.grey[200],
+      nextFocus: true,
+      actions: [
+        KeyboardActionsItem(
+          focusNode: _nodeText1,
+          toolbarButtons: [
+                (node) {
+              return GestureDetector(
+                onTap: () => node.unfocus(),
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text('完了'),
+                ),
+              );
+            }
+          ]
+        ),
+        KeyboardActionsItem(focusNode: _nodeText2, toolbarButtons: [
+              (node) {
+            return GestureDetector(
+              onTap: () => node.unfocus(),
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(Icons.close),
+              ),
+            );
+          }
+        ]),
+//        KeyboardActionsItem(
+//          focusNode: _nodeText3,
+//          onTapAction: () {
+//            ShowDialog(
+//                context: context,
+//                builder: (context) {
+//                  return AlertDialog(
+//                    content: Text("Custom Action"),
+//                    actions: <Widget>[
+//                      FlatButton(
+//                        child: Text("OK"),
+//                        onPressed: () => Navigator.of(context).pop(),
+//                      )
+//                    ],
+//                  );
+//                });
+//          },
+//        ),
+        KeyboardActionsItem(
+          focusNode: _nodeText4,
+          displayActionBar: false,
+        ),
+        KeyboardActionsItem(
+          focusNode: _nodeText5,
+          toolbarButtons: [
+            //button 1
+                (node) {
+              return GestureDetector(
+                onTap: () => node.unfocus(),
+                child: Container(
+                  color: Colors.white,
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    "CLOSE",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              );
+            },
+            //button 2
+                (node) {
+              return GestureDetector(
+                onTap: () => node.unfocus(),
+                child: Container(
+                  color: Colors.black,
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    "DONE",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              );
+            }
+          ],
+        ),
+        KeyboardActionsItem(
+          focusNode: _nodeText6,
+          footerBuilder: (_) => PreferredSize(
+              child: SizedBox(
+                  height: 40,
+                  child: Center(
+                    child: Text('Custom Footer'),
+                  )),
+              preferredSize: Size.fromHeight(40)),
+        ),
+      ],
+    );
+  }
+
 
   ///保存条件を渡しておく(画像読取時に振り分けるため)
   RecordStatus recordStatus = RecordStatus.camera;
@@ -51,7 +162,11 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text('画像をローカルで管理'),
       ),
-      body: SingleChildScrollView(
+      body:  KeyboardActions(
+      config: _buildConfig(context),
+      child:
+
+      SingleChildScrollView(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -124,7 +239,62 @@ class _MyHomePageState extends State<MyHomePage> {
                 height: 30,
               ),
           ///keyboard_actionsのテスト
-
+//              KeyboardActions(
+//                config: _buildConfig(context),
+//                child:
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        TextField(
+                          keyboardType: TextInputType.number,
+                          focusNode: _nodeText1,
+                          decoration: InputDecoration(
+                            hintText: "Input Number",
+                          ),
+                        ),
+                        TextField(
+                          keyboardType: TextInputType.text,
+                          focusNode: _nodeText2,
+                          decoration: InputDecoration(
+                            hintText: "Input Text with Custom Done Button",
+                          ),
+                        ),
+                        TextField(
+                          keyboardType: TextInputType.number,
+                          focusNode: _nodeText3,
+                          decoration: InputDecoration(
+                            hintText: "Input Number with Custom Action",
+                          ),
+                        ),
+                        TextField(
+                          keyboardType: TextInputType.text,
+                          focusNode: _nodeText4,
+                          decoration: InputDecoration(
+                            hintText: "Input Text without Done button",
+                          ),
+                        ),
+                        TextField(
+                          keyboardType: TextInputType.number,
+                          focusNode: _nodeText5,
+                          decoration: InputDecoration(
+                            hintText: "Input Number with Toolbar Buttons",
+                          ),
+                        ),
+                        TextField(
+                          keyboardType: TextInputType.number,
+                          focusNode: _nodeText6,
+                          decoration: InputDecoration(
+                            hintText: "Input Number with Custom Footer",
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+//              ),
 
               SizedBox(
                 height: 50,
@@ -168,6 +338,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
+      ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
