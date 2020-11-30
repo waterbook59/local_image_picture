@@ -121,9 +121,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     context, _image, recordStatus, _textEditingController),
               ),
               SizedBox(
-                height: 10,
+                height: 30,
               ),
+          ///keyboard_actionsのテスト
 
+
+              SizedBox(
+                height: 50,
+              ),
               ///DBから呼び出し
               const Text(
                 '呼び出すキーを入力',
@@ -215,12 +220,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   ///SharedPreferencesに保存したパスを読み取り
   Future<void> getLocalImage(
-      BuildContext context, RecordStatus recordStatus,_localFileKey) async {
+      BuildContext context, RecordStatus recordStatus, TextEditingController _localFileKey) async {
     //enumで記録形式を指定
     print('ドキュメントディレクトリから画像を取得');
 
     final prefs = await SharedPreferences.getInstance();
-    baseNameLocalFile = File(prefs.getString(_localFileKey.text));
+    baseNameLocalFile = File(prefs.getString( _localFileKey.text as String));
     setState(() {});
   }
 

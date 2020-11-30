@@ -15,7 +15,7 @@ class FileController {
   // 画像をドキュメントへ保存する。
   // 引数にはカメラ撮影時にreturnされるFileオブジェクトを持たせる。
   static Future saveLocalImage(File image) async {
-    final path = await localPath;
+    final dynamic path = await localPath;
     final imagePath = '$path/image.png';
     File imageFile = File(imagePath);
     // カメラで撮影した画像は撮影時用の一時的フォルダパスに保存されるため、
@@ -29,7 +29,7 @@ class FileController {
   }
 
   static Future<void> saveOriginalNameImage(File image, TextEditingController controller) async {
-    final path = await localPath; //directory.path
+    final dynamic path = await localPath; //directory.path
     ///file名(image.png)のところは、var fileName =basename(file.path)として、末尾だけを使ってファイル名付けられる
     ///import 'package:path/path.dart';必須
     ///例：file = File("/dir1/dir2/file.ext")=>basename(file)=>file.extだけ抽出できる

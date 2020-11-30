@@ -31,6 +31,7 @@ dependencies:
   path_provider: ^1.6.24
   image_picker: ^0.6.7+12
   shared_preferences: ^0.5.12+4
+  keyboard_actions: ^3.3.1+1
 
 dev_dependencies:
   flutter_test:
